@@ -7,12 +7,12 @@
  * @version 1.0.0
  */
 
-// WooCommerce kontrolü - yumuşak uyarı
+// WooCommerce kontrolü - sessiz kontrol
 if (!class_exists('WooCommerce')) {
-    echo '<div class="woocommerce-warning" style="background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 20px; margin: 20px; border-radius: 8px; text-align: center;">';
-    echo '<h3>⚠️ WooCommerce Gerekli</h3>';
-    echo '<p>Bu tema WooCommerce eklentisi gerektirir. Lütfen WooCommerce\'i yükleyin ve etkinleştirin.</p>';
-    echo '<a href="' . admin_url('plugin-install.php?s=woocommerce&tab=search&type=term') . '" style="background: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">WooCommerce Yükle</a>';
+    // WooCommerce yoksa sadece basit bir mesaj göster
+    echo '<div style="text-align: center; padding: 50px; color: #666;">';
+    echo '<h2>Site Hazırlanıyor</h2>';
+    echo '<p>Lütfen bekleyin...</p>';
     echo '</div>';
     return;
 }

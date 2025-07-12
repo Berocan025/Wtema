@@ -271,25 +271,27 @@ if (class_exists('WooCommerce')) {
     
     // WooCommerce uyumluluk fonksiyonları
     function digital_license_pro_wc_compatibility_functions() {
-        // WooCommerce yüklü değilse yumuşak uyarı ver
+        // WooCommerce yüklü değilse sessiz kontrol
         if (!class_exists('WooCommerce')) {
+            // Sadece admin panelinde sessiz bir bilgi mesajı
             add_action('admin_notices', function() {
-                echo '<div class="notice notice-warning is-dismissible">';
-                echo '<p><strong>Digital License Pro:</strong> WooCommerce eklentisi gereklidir. Lütfen WooCommerce\'i yükleyin ve etkinleştirin.</p>';
-                echo '<p><a href="' . admin_url('plugin-install.php?s=woocommerce&tab=search&type=term') . '" class="button button-primary">WooCommerce Yükle</a></p>';
-                echo '</div>';
-            });
-            
-            // Frontend'de de yumuşak uyarı göster
-            add_action('wp_footer', function() {
-                if (is_front_page()) {
-                    echo '<div class="woocommerce-warning" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 20px; border-radius: 8px; text-align: center; z-index: 9999; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">';
-                    echo '<h3>⚠️ WooCommerce Gerekli</h3>';
-                    echo '<p>Bu tema WooCommerce eklentisi gerektirir.</p>';
-                    echo '<a href="' . admin_url('plugin-install.php?s=woocommerce&tab=search&type=term') . '" style="background: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">WooCommerce Yükle</a>';
+                if (current_user_can('manage_options')) {
+                    echo '<div class="notice notice-info is-dismissible">';
+                    echo '<p><strong>Digital License Pro:</strong> WooCommerce eklentisini yüklemek için <a href="' . admin_url('plugin-install.php?s=woocommerce&tab=search&type=term') . '">buraya tıklayın</a>.</p>';
                     echo '</div>';
                 }
             });
+            
+            // Frontend'de uyarı gösterme - sadece admin panelinde göster
+            // add_action('wp_footer', function() {
+            //     if (is_front_page()) {
+            //         echo '<div class="woocommerce-warning" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 20px; border-radius: 8px; text-align: center; z-index: 9999; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">';
+            //         echo '<h3>⚠️ WooCommerce Gerekli</h3>';
+            //         echo '<p>Bu tema WooCommerce eklentisi gerektirir.</p>';
+            //         echo '<a href="' . admin_url('plugin-install.php?s=woocommerce&tab=search&type=term') . '" style="background: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">WooCommerce Yükle</a>';
+            //         echo '</div>';
+            //     }
+            // });
             return;
         }
         
@@ -590,10 +592,20 @@ remove_action('admin_init', '_maybe_update_core');
 /**
  * Hata Ayıklama
  */
-if (WP_DEBUG) {
+// Debug modunu kontrol et ve güvenli hale getir
+if (defined('WP_DEBUG') && WP_DEBUG) {
     // Hata loglarını özel dosyaya yaz
     ini_set('log_errors', 1);
     ini_set('error_log', WP_CONTENT_DIR . '/debug.log');
+    
+    // Hataları ekranda gösterme (sadece log'a yaz)
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+} else {
+    // Debug kapalıysa tüm hata gösterimini kapat
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+    ini_set('log_errors', 0);
 }
 
 /**
