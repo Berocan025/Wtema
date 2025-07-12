@@ -39,7 +39,7 @@
                             <h3 class="widget-title">Hızlı Linkler</h3>
                             <ul class="footer-links">
                                 <li><a href="<?php echo home_url('/'); ?>">Ana Sayfa</a></li>
-                                <li><a href="<?php echo get_permalink(get_option('woocommerce_shop_page_id')); ?>">Ürünler</a></li>
+                                <li><a href="<?php echo class_exists('WooCommerce') ? get_permalink(get_option('woocommerce_shop_page_id')) : '#'; ?>">Ürünler</a></li>
                                 <li><a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>">Hesabım</a></li>
                                 <li><a href="<?php echo get_permalink(get_option('woocommerce_cart_page_id')); ?>">Sepet</a></li>
                                 <li><a href="<?php echo get_permalink(get_option('woocommerce_checkout_page_id')); ?>">Ödeme</a></li>

@@ -7,9 +7,14 @@
  * @version 1.0.0
  */
 
-// WooCommerce kontrolü
+// WooCommerce kontrolü - yumuşak uyarı
 if (!class_exists('WooCommerce')) {
-    wp_die('Bu tema WooCommerce eklentisi gerektirir. Lütfen WooCommerce\'i yükleyin ve etkinleştirin.');
+    echo '<div class="woocommerce-warning" style="background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 20px; margin: 20px; border-radius: 8px; text-align: center;">';
+    echo '<h3>⚠️ WooCommerce Gerekli</h3>';
+    echo '<p>Bu tema WooCommerce eklentisi gerektirir. Lütfen WooCommerce\'i yükleyin ve etkinleştirin.</p>';
+    echo '<a href="' . admin_url('plugin-install.php?s=woocommerce&tab=search&type=term') . '" style="background: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 10px;">WooCommerce Yükle</a>';
+    echo '</div>';
+    return;
 }
 
 get_header(); ?>
@@ -55,7 +60,7 @@ get_header(); ?>
                 </div>
                 
                 <div class="hero-actions">
-                    <a href="<?php echo get_permalink(get_option('woocommerce_shop_page_id')); ?>" class="btn btn-primary btn-xl hero-btn">
+                    <a href="<?php echo class_exists('WooCommerce') ? get_permalink(get_option('woocommerce_shop_page_id')) : '#'; ?>" class="btn btn-primary btn-xl hero-btn">
                         <i class="fas fa-shopping-cart"></i>
                         Ürünleri İncele
                     </a>
@@ -122,47 +127,87 @@ get_header(); ?>
             // WooCommerce uyumlu ürün sorgusu
             $popular_products = array();
             
-            // Önce öne çıkan ürünleri al
-            $featured_products = wc_get_products(array(
-                'limit' => 6,
-                'status' => 'publish',
-                'featured' => true,
-                'return' => 'ids'
-            ));
-            
-            if (!empty($featured_products)) {
-                $popular_products = $featured_products;
+            // wc_get_products fonksiyonu var mı kontrol et
+            if (function_exists('wc_get_products')) {
+                // Önce öne çıkan ürünleri al
+                $featured_products = wc_get_products(array(
+                    'limit' => 6,
+                    'status' => 'publish',
+                    'featured' => true,
+                    'return' => 'ids'
+                ));
+                
+                if (!empty($featured_products)) {
+                    $popular_products = $featured_products;
+                } else {
+                    // Öne çıkan ürün yoksa popüler ürünleri al
+                    $popular_products = wc_get_products(array(
+                        'limit' => 6,
+                        'status' => 'publish',
+                        'orderby' => 'popularity',
+                        'return' => 'ids'
+                    ));
+                }
+                
+                // Hala ürün yoksa son eklenen ürünleri al
+                if (empty($popular_products)) {
+                    $popular_products = wc_get_products(array(
+                        'limit' => 6,
+                        'status' => 'publish',
+                        'orderby' => 'date',
+                        'order' => 'DESC',
+                        'return' => 'ids'
+                    ));
+                }
             } else {
-                // Öne çıkan ürün yoksa popüler ürünleri al
-                $popular_products = wc_get_products(array(
-                    'limit' => 6,
-                    'status' => 'publish',
-                    'orderby' => 'popularity',
-                    'return' => 'ids'
+                // Eski WooCommerce sürümleri için fallback
+                $popular_products = get_posts(array(
+                    'post_type' => 'product',
+                    'posts_per_page' => 6,
+                    'post_status' => 'publish',
+                    'meta_query' => array(
+                        array(
+                            'key' => '_featured',
+                            'value' => 'yes'
+                        )
+                    )
                 ));
-            }
-            
-            // Hala ürün yoksa son eklenen ürünleri al
-            if (empty($popular_products)) {
-                $popular_products = wc_get_products(array(
-                    'limit' => 6,
-                    'status' => 'publish',
-                    'orderby' => 'date',
-                    'order' => 'DESC',
-                    'return' => 'ids'
-                ));
+                
+                if (empty($popular_products)) {
+                    $popular_products = get_posts(array(
+                        'post_type' => 'product',
+                        'posts_per_page' => 6,
+                        'post_status' => 'publish'
+                    ));
+                }
+                
+                // Post ID'lerini al
+                $popular_products = wp_list_pluck($popular_products, 'ID');
             }
             
             if ($popular_products && is_array($popular_products) && !empty($popular_products)) :
                 foreach ($popular_products as $product_id) :
-                    $product = wc_get_product($product_id);
-                    if ($product && $product->is_visible()) :
+                    // wc_get_product fonksiyonu var mı kontrol et
+                    if (function_exists('wc_get_product')) {
+                        $product = wc_get_product($product_id);
+                    } else {
+                        // Eski WooCommerce sürümleri için
+                        $product = new WC_Product($product_id);
+                    }
+                    
+                    if ($product && (method_exists($product, 'is_visible') ? $product->is_visible() : true)) :
             ?>
                 <div class="product-card">
                     <div class="product-image">
-                        <?php echo $product->get_image('medium'); ?>
+                        <?php 
+                        if (method_exists($product, 'get_image')) {
+                            echo $product->get_image('medium');
+                        } else {
+                            echo get_the_post_thumbnail($product_id, 'medium');
+                        }
+                        ?>
                         <div class="product-overlay">
-                            <a href="<?php echo $product->get_permalink(); ?>" class="btn btn-primary btn-sm">
+                            <a href="<?php echo method_exists($product, 'get_permalink') ? $product->get_permalink() : get_permalink($product_id); ?>" class="btn btn-primary btn-sm">
                                 <i class="fas fa-eye"></i>
                                 İncele
                             </a>
@@ -171,13 +216,13 @@ get_header(); ?>
                     
                     <div class="product-content">
                         <h3 class="product-title">
-                            <a href="<?php echo $product->get_permalink(); ?>">
-                                <?php echo $product->get_name(); ?>
+                            <a href="<?php echo method_exists($product, 'get_permalink') ? $product->get_permalink() : get_permalink($product_id); ?>">
+                                <?php echo method_exists($product, 'get_name') ? $product->get_name() : get_the_title($product_id); ?>
                             </a>
                         </h3>
                         
                         <div class="product-price">
-                            <?php echo $product->get_price_html(); ?>
+                            <?php echo method_exists($product, 'get_price_html') ? $product->get_price_html() : wc_price(get_post_meta($product_id, '_price', true)); ?>
                         </div>
                         
                         <div class="product-features">
@@ -192,7 +237,7 @@ get_header(); ?>
                         </div>
                         
                         <div class="product-actions">
-                            <a href="<?php echo $product->add_to_cart_url(); ?>" class="btn btn-primary btn-sm">
+                            <a href="<?php echo method_exists($product, 'add_to_cart_url') ? $product->add_to_cart_url() : add_query_arg('add-to-cart', $product_id, wc_get_cart_url()); ?>" class="btn btn-primary btn-sm">
                                 <i class="fas fa-shopping-cart"></i>
                                 Sepete Ekle
                             </a>
@@ -219,7 +264,7 @@ get_header(); ?>
         </div>
         
         <div class="section-actions">
-            <a href="<?php echo get_permalink(get_option('woocommerce_shop_page_id')); ?>" class="btn btn-secondary btn-lg">
+            <a href="<?php echo class_exists('WooCommerce') ? get_permalink(get_option('woocommerce_shop_page_id')) : '#'; ?>" class="btn btn-secondary btn-lg">
                 Tüm Ürünleri Gör
                 <i class="fas fa-arrow-right"></i>
             </a>
@@ -560,7 +605,7 @@ get_header(); ?>
                 İhtiyacınız olan yazılım lisansını hemen satın alın ve anında kullanmaya başlayın.
             </p>
             <div class="cta-actions">
-                <a href="<?php echo get_permalink(get_option('woocommerce_shop_page_id')); ?>" class="btn btn-primary btn-xl">
+                <a href="<?php echo class_exists('WooCommerce') ? get_permalink(get_option('woocommerce_shop_page_id')) : '#'; ?>" class="btn btn-primary btn-xl">
                     <i class="fas fa-shopping-cart"></i>
                     Ürünleri İncele
                 </a>
