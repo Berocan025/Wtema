@@ -443,6 +443,9 @@ function digital_license_pro_admin_customizations() {
 }
 add_action('init', 'digital_license_pro_admin_customizations');
 
+// Include admin panel
+require_once get_template_directory() . '/inc/admin-panel.php';
+
 /**
  * Güvenlik ve Optimizasyon
  */
