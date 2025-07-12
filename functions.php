@@ -36,6 +36,12 @@ function digital_license_pro_setup() {
     add_theme_support('wc-product-gallery-lightbox');
     add_theme_support('wc-product-gallery-slider');
     
+    // WooCommerce 8.0+ uyumluluğu
+    add_theme_support('woocommerce-product-gallery');
+    add_theme_support('woocommerce-product-gallery-zoom');
+    add_theme_support('woocommerce-product-gallery-lightbox');
+    add_theme_support('woocommerce-product-gallery-slider');
+    
     // Menü konumları
     register_nav_menus(array(
         'primary' => __('Ana Menü', 'digital-license-pro'),
@@ -155,6 +161,26 @@ function digital_license_pro_fallback_menu() {
 }
 
 /**
+ * WooCommerce Uyumluluk Kontrolü
+ */
+function digital_license_pro_woocommerce_compatibility() {
+    // WooCommerce sürüm kontrolü
+    if (defined('WC_VERSION')) {
+        $wc_version = WC_VERSION;
+        $min_version = '5.0.0';
+        
+        if (version_compare($wc_version, $min_version, '<')) {
+            add_action('admin_notices', function() use ($wc_version, $min_version) {
+                echo '<div class="notice notice-warning is-dismissible">';
+                echo '<p><strong>Digital License Pro:</strong> WooCommerce ' . $min_version . ' veya üzeri gereklidir. Mevcut sürüm: ' . $wc_version . '</p>';
+                echo '</div>';
+            });
+        }
+    }
+}
+add_action('admin_init', 'digital_license_pro_woocommerce_compatibility');
+
+/**
  * WooCommerce Özelleştirmeleri
  */
 if (class_exists('WooCommerce')) {
@@ -196,6 +222,52 @@ if (class_exists('WooCommerce')) {
     // Ürün listesi özelleştirmeleri
     remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5);
     add_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 15);
+    
+    // WooCommerce template override kontrolü
+    add_filter('woocommerce_locate_template', 'digital_license_pro_woocommerce_template_override', 10, 3);
+    
+    function digital_license_pro_woocommerce_template_override($template, $template_name, $template_path) {
+        // Tema template dizini
+        $theme_template = get_template_directory() . '/woocommerce/' . $template_name;
+        
+        // Template varsa kullan
+        if (file_exists($theme_template)) {
+            return $theme_template;
+        }
+        
+        return $template;
+    }
+    
+    // WooCommerce 8.0+ uyumluluk güncellemeleri
+    add_action('init', 'digital_license_pro_woocommerce_8_compatibility');
+    
+    function digital_license_pro_woocommerce_8_compatibility() {
+        // Yeni hook'ları eski hook'larla uyumlu hale getir
+        if (version_compare(WC_VERSION, '8.0.0', '>=')) {
+            // WooCommerce 8.0+ için özel ayarlar
+            add_filter('woocommerce_product_get_image_id', 'digital_license_pro_product_image_fallback', 10, 2);
+            add_filter('woocommerce_product_get_gallery_image_ids', 'digital_license_pro_gallery_images_fallback', 10, 2);
+        }
+    }
+    
+    function digital_license_pro_product_image_fallback($image_id, $product) {
+        if (!$image_id && $product) {
+            // Varsayılan ürün resmi
+            return get_option('woocommerce_placeholder_image', 0);
+        }
+        return $image_id;
+    }
+    
+    function digital_license_pro_gallery_images_fallback($gallery_image_ids, $product) {
+        if (empty($gallery_image_ids) && $product) {
+            // Ana ürün resmini galeriye ekle
+            $main_image_id = $product->get_image_id();
+            if ($main_image_id) {
+                return array($main_image_id);
+            }
+        }
+        return $gallery_image_ids;
+    }
     
     // Dijital ürün özellikleri
     add_action('woocommerce_single_product_summary', 'digital_license_pro_product_features', 20);
@@ -445,6 +517,9 @@ add_action('init', 'digital_license_pro_admin_customizations');
 
 // Include admin panel
 require_once get_template_directory() . '/inc/admin-panel.php';
+
+// Include WooCommerce updater
+require_once get_template_directory() . '/inc/woocommerce-updater.php';
 
 /**
  * Güvenlik ve Optimizasyon

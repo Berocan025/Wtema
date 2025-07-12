@@ -166,7 +166,42 @@ add_action('woocommerce_single_product_summary', 'digital_license_pro_product_fe
 add_filter('woocommerce_add_to_cart_fragments', 'digital_license_pro_cart_count_fragments');
 ```
 
-## 🚀 Performans Optimizasyonu
+## � WooCommerce Uyumluluk
+
+### Güncel Sürüm Desteği
+- ✅ WooCommerce 5.0 - 8.0+ tam uyumluluk
+- ✅ Otomatik template güncelleme sistemi
+- ✅ Uyumluluk kontrolü ve bildirimler
+- ✅ Geriye dönük uyumluluk
+
+### Template Güncelleme Sistemi
+Tema, WooCommerce güncellemelerini otomatik olarak kontrol eder ve eski template'leri tespit eder:
+
+1. **Otomatik Kontrol**: Admin panelinde eski template'ler için uyarı gösterir
+2. **Tek Tıkla Güncelleme**: Eski template'leri tek tıkla güncelleyebilirsiniz
+3. **Özel Özellik Korunması**: Güncelleme sırasında özel özellikleriniz korunur
+4. **Güvenli Güncelleme**: Yedekleme ve geri alma özellikleri
+
+### Uyumluluk Kontrolü
+```php
+// WooCommerce sürüm kontrolü
+if (defined('WC_VERSION')) {
+    $wc_version = WC_VERSION;
+    $min_version = '5.0.0';
+    
+    if (version_compare($wc_version, $min_version, '<')) {
+        // Uyarı göster
+    }
+}
+```
+
+### Template Override Sistemi
+```php
+// Tema template'lerini öncelikle kullan
+add_filter('woocommerce_locate_template', 'digital_license_pro_woocommerce_template_override', 10, 3);
+```
+
+## �🚀 Performans Optimizasyonu
 
 ### Önerilen Ayarlar
 1. **Caching**: WP Rocket veya W3 Total Cache kullanın
@@ -213,6 +248,13 @@ add_filter('woocommerce_add_to_cart_fragments', 'digital_license_pro_cart_count_
 Bu tema GPL v2 veya üzeri lisansı altında dağıtılmaktadır.
 
 ## 🔄 Güncellemeler
+
+### Sürüm 1.0.1
+- ✅ WooCommerce 8.0+ uyumluluğu eklendi
+- ✅ Template güncelleme sistemi eklendi
+- ✅ Otomatik uyumluluk kontrolü
+- ✅ Güvenlik güncellemeleri
+- ✅ Performans iyileştirmeleri
 
 ### Sürüm 1.0.0
 - ✅ İlk sürüm yayınlandı
