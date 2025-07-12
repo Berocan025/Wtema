@@ -13,6 +13,35 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Hata Mesajlarını Tamamen Kapat
+ */
+// En başta hata gösterimini kapat
+error_reporting(0);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+ini_set('log_errors', 0);
+
+// WordPress debug ayarlarını zorla kapat
+if (!defined('WP_DEBUG')) {
+    define('WP_DEBUG', false);
+}
+if (!defined('WP_DEBUG_DISPLAY')) {
+    define('WP_DEBUG_DISPLAY', false);
+}
+if (!defined('WP_DEBUG_LOG')) {
+    define('WP_DEBUG_LOG', false);
+}
+
+// WordPress hata mesajlarını gizle
+add_action('init', function() {
+    remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'rsd_link');
+    remove_action('wp_head', 'wp_shortlink_wp_head');
+    remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+});
+
+/**
  * Tema Kurulumu
  */
 function digital_license_pro_setup() {
@@ -590,26 +619,33 @@ remove_action('wp_version_check', 'wp_version_check');
 remove_action('admin_init', '_maybe_update_core');
 
 /**
- * Hata Ayıklama
+ * Hata Ayıklama - Agresif Kapatma
  */
-// Tüm hata gösterimini kapat - güvenlik için
+// Tüm hata gösterimini zorla kapat
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
+ini_set('log_errors', 0);
 
-// Debug modunu kontrol et ve güvenli hale getir
-if (defined('WP_DEBUG') && WP_DEBUG) {
-    // Hata loglarını özel dosyaya yaz
-    ini_set('log_errors', 1);
-    ini_set('error_log', WP_CONTENT_DIR . '/debug.log');
-} else {
-    // Debug kapalıysa log'u da kapat
-    ini_set('log_errors', 0);
+// WordPress debug ayarlarını zorla kapat
+if (!defined('WP_DEBUG')) {
+    define('WP_DEBUG', false);
 }
-
-// WordPress hata mesajlarını gizle
 if (!defined('WP_DEBUG_DISPLAY')) {
     define('WP_DEBUG_DISPLAY', false);
 }
+if (!defined('WP_DEBUG_LOG')) {
+    define('WP_DEBUG_LOG', false);
+}
+
+// Hata raporlamayı kapat
+error_reporting(0);
+
+// WordPress hata mesajlarını gizle
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
 /**
  * Tema Aktivasyon Hook'u

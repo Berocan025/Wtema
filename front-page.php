@@ -7,6 +7,11 @@
  * @version 1.0.0
  */
 
+// Hata gösterimini kapat
+error_reporting(0);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+
 // WooCommerce kontrolü - güvenli kontrol
 $woocommerce_available = class_exists('WooCommerce');
 
