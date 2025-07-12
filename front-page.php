@@ -7,15 +7,8 @@
  * @version 1.0.0
  */
 
-// WooCommerce kontrolü - sessiz kontrol
-if (!class_exists('WooCommerce')) {
-    // WooCommerce yoksa sadece basit bir mesaj göster
-    echo '<div style="text-align: center; padding: 50px; color: #666;">';
-    echo '<h2>Site Hazırlanıyor</h2>';
-    echo '<p>Lütfen bekleyin...</p>';
-    echo '</div>';
-    return;
-}
+// WooCommerce kontrolü - güvenli kontrol
+$woocommerce_available = class_exists('WooCommerce');
 
 get_header(); ?>
 
@@ -127,8 +120,7 @@ get_header(); ?>
             // WooCommerce uyumlu ürün sorgusu
             $popular_products = array();
             
-            // wc_get_products fonksiyonu var mı kontrol et
-            if (function_exists('wc_get_products')) {
+            if ($woocommerce_available && function_exists('wc_get_products')) {
                 // Önce öne çıkan ürünleri al
                 $featured_products = wc_get_products(array(
                     'limit' => 6,
@@ -159,7 +151,7 @@ get_header(); ?>
                         'return' => 'ids'
                     ));
                 }
-            } else {
+            } elseif ($woocommerce_available) {
                 // Eski WooCommerce sürümleri için fallback
                 $popular_products = get_posts(array(
                     'post_type' => 'product',
@@ -185,7 +177,7 @@ get_header(); ?>
                 $popular_products = wp_list_pluck($popular_products, 'ID');
             }
             
-            if ($popular_products && is_array($popular_products) && !empty($popular_products)) :
+            if ($woocommerce_available && $popular_products && is_array($popular_products) && !empty($popular_products)) :
                 foreach ($popular_products as $product_id) :
                     // wc_get_product fonksiyonu var mı kontrol et
                     if (function_exists('wc_get_product')) {
@@ -248,6 +240,7 @@ get_header(); ?>
                     endif;
                 endforeach;
             else :
+                if ($woocommerce_available) :
             ?>
                 <div class="no-products-message">
                     <div class="no-products-content">
@@ -260,7 +253,15 @@ get_header(); ?>
                         </a>
                     </div>
                 </div>
-            <?php endif; ?>
+            <?php else : ?>
+                <div class="woocommerce-notice">
+                    <div class="woocommerce-notice-content">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>E-ticaret Hazırlanıyor</h3>
+                        <p>WooCommerce eklentisi yüklendikten sonra ürünleriniz burada görünecek.</p>
+                    </div>
+                </div>
+            <?php endif; endif; ?>
         </div>
         
         <div class="section-actions">

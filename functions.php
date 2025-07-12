@@ -592,20 +592,23 @@ remove_action('admin_init', '_maybe_update_core');
 /**
  * Hata Ayıklama
  */
+// Tüm hata gösterimini kapat - güvenlik için
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+
 // Debug modunu kontrol et ve güvenli hale getir
 if (defined('WP_DEBUG') && WP_DEBUG) {
     // Hata loglarını özel dosyaya yaz
     ini_set('log_errors', 1);
     ini_set('error_log', WP_CONTENT_DIR . '/debug.log');
-    
-    // Hataları ekranda gösterme (sadece log'a yaz)
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
 } else {
-    // Debug kapalıysa tüm hata gösterimini kapat
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
+    // Debug kapalıysa log'u da kapat
     ini_set('log_errors', 0);
+}
+
+// WordPress hata mesajlarını gizle
+if (!defined('WP_DEBUG_DISPLAY')) {
+    define('WP_DEBUG_DISPLAY', false);
 }
 
 /**

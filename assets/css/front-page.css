@@ -353,6 +353,37 @@
     margin-bottom: var(--spacing-xl);
 }
 
+/* WooCommerce Notice */
+.woocommerce-notice {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-4xl) var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-2xl);
+    border: 2px dashed var(--border-color);
+}
+
+.woocommerce-notice-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.woocommerce-notice-content i {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.woocommerce-notice-content h3 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.woocommerce-notice-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
 .product-card {
     background: var(--bg-primary);
     border-radius: var(--radius-2xl);
