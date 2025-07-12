@@ -322,6 +322,37 @@
     margin-bottom: var(--spacing-3xl);
 }
 
+/* No Products Message */
+.no-products-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-4xl) var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-2xl);
+    border: 2px dashed var(--border-color);
+}
+
+.no-products-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.no-products-content i {
+    font-size: 4rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-lg);
+}
+
+.no-products-content h3 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.no-products-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
 .product-card {
     background: var(--bg-primary);
     border-radius: var(--radius-2xl);

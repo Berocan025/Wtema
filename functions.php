@@ -269,6 +269,45 @@ if (class_exists('WooCommerce')) {
         return $gallery_image_ids;
     }
     
+    // WooCommerce uyumluluk fonksiyonları
+    function digital_license_pro_wc_compatibility_functions() {
+        // WooCommerce yüklü değilse uyarı ver
+        if (!class_exists('WooCommerce')) {
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible">';
+                echo '<p><strong>Digital License Pro:</strong> WooCommerce eklentisi gereklidir. Lütfen WooCommerce\'i yükleyin ve etkinleştirin.</p>';
+                echo '</div>';
+            });
+            return;
+        }
+        
+        // wc_get_featured_product_ids fonksiyonu yoksa oluştur
+        if (!function_exists('wc_get_featured_product_ids')) {
+            function wc_get_featured_product_ids() {
+                if (!function_exists('wc_get_products')) {
+                    return array();
+                }
+                $featured_products = wc_get_products(array(
+                    'limit' => -1,
+                    'status' => 'publish',
+                    'featured' => true,
+                    'return' => 'ids'
+                ));
+                return $featured_products;
+            }
+        }
+        
+        // wc_get_products fonksiyonu yoksa uyarı ver
+        if (!function_exists('wc_get_products')) {
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible">';
+                echo '<p><strong>Digital License Pro:</strong> WooCommerce 3.0+ gereklidir. Lütfen WooCommerce\'i güncelleyin.</p>';
+                echo '</div>';
+            });
+        }
+    }
+    add_action('init', 'digital_license_pro_wc_compatibility_functions');
+    
     // Dijital ürün özellikleri
     add_action('woocommerce_single_product_summary', 'digital_license_pro_product_features', 20);
     

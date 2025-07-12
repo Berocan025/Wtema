@@ -7,6 +7,11 @@
  * @version 1.0.0
  */
 
+// WooCommerce kontrolü
+if (!class_exists('WooCommerce')) {
+    wp_die('Bu tema WooCommerce eklentisi gerektirir. Lütfen WooCommerce\'i yükleyin ve etkinleştirin.');
+}
+
 get_header(); ?>
 
 <!-- Hero Section -->
@@ -114,8 +119,21 @@ get_header(); ?>
         
         <div class="products-carousel">
             <?php
-            $popular_products = wc_get_featured_product_ids();
-            if (empty($popular_products)) {
+            // WooCommerce uyumlu ürün sorgusu
+            $popular_products = array();
+            
+            // Önce öne çıkan ürünleri al
+            $featured_products = wc_get_products(array(
+                'limit' => 6,
+                'status' => 'publish',
+                'featured' => true,
+                'return' => 'ids'
+            ));
+            
+            if (!empty($featured_products)) {
+                $popular_products = $featured_products;
+            } else {
+                // Öne çıkan ürün yoksa popüler ürünleri al
                 $popular_products = wc_get_products(array(
                     'limit' => 6,
                     'status' => 'publish',
@@ -124,10 +142,21 @@ get_header(); ?>
                 ));
             }
             
-            if ($popular_products) :
+            // Hala ürün yoksa son eklenen ürünleri al
+            if (empty($popular_products)) {
+                $popular_products = wc_get_products(array(
+                    'limit' => 6,
+                    'status' => 'publish',
+                    'orderby' => 'date',
+                    'order' => 'DESC',
+                    'return' => 'ids'
+                ));
+            }
+            
+            if ($popular_products && is_array($popular_products) && !empty($popular_products)) :
                 foreach ($popular_products as $product_id) :
                     $product = wc_get_product($product_id);
-                    if ($product) :
+                    if ($product && $product->is_visible()) :
             ?>
                 <div class="product-card">
                     <div class="product-image">
@@ -173,8 +202,20 @@ get_header(); ?>
             <?php
                     endif;
                 endforeach;
-            endif;
+            else :
             ?>
+                <div class="no-products-message">
+                    <div class="no-products-content">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Henüz Ürün Eklenmemiş</h3>
+                        <p>Mağazanızda henüz ürün bulunmuyor. Admin panelinden ürün ekleyebilirsiniz.</p>
+                        <a href="<?php echo admin_url('post-new.php?post_type=product'); ?>" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Ürün Ekle
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
         
         <div class="section-actions">
