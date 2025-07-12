@@ -116,6 +116,11 @@ function digital_license_pro_scripts() {
     // Özel CSS dosyası
     wp_enqueue_style('digital-license-pro-custom', get_template_directory_uri() . '/assets/css/custom.css', array(), '1.0.0');
     
+    // Ana sayfa CSS dosyası
+    if (is_front_page()) {
+        wp_enqueue_style('digital-license-pro-front-page', get_template_directory_uri() . '/assets/css/front-page.css', array(), '1.0.0');
+    }
+    
     // Ana JavaScript dosyası
     wp_enqueue_script('digital-license-pro-script', get_template_directory_uri() . '/assets/js/theme.js', array('jquery'), '1.0.0', true);
     
