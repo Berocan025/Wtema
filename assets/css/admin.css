@@ -1,0 +1,624 @@
+/**
+ * Digital License Pro - Admin Panel Styles
+ * 
+ * @package DigitalLicensePro
+ * @author BERAT K - 0539 511 56 32
+ * @version 1.0.0
+ */
+
+/* ===== ADMIN PANEL LAYOUT ===== */
+.dlp-admin-wrap {
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.dlp-admin-header {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    color: white;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.dlp-admin-header-content h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dlp-admin-header-content h1 .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+}
+
+.dlp-admin-header-content p {
+    margin: 0;
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.dlp-admin-header-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.dlp-admin-header-actions .button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dlp-admin-header-actions .button-primary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dlp-admin-header-actions .button-primary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.dlp-admin-header-actions .button-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dlp-admin-header-actions .button-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* ===== ADMIN CONTENT ===== */
+.dlp-admin-content {
+    display: flex;
+    min-height: 600px;
+}
+
+.dlp-admin-sidebar {
+    width: 280px;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    padding: 30px 0;
+}
+
+.dlp-admin-main {
+    flex: 1;
+    padding: 30px;
+    background: #fff;
+}
+
+/* ===== ADMIN NAVIGATION ===== */
+.dlp-admin-nav {
+    margin-bottom: 30px;
+}
+
+.dlp-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.dlp-nav-item:hover {
+    background: #f1f5f9;
+    color: #2563eb;
+    border-left-color: #2563eb;
+}
+
+.dlp-nav-item.active {
+    background: #eff6ff;
+    color: #2563eb;
+    border-left-color: #2563eb;
+}
+
+.dlp-nav-item .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+/* ===== ADMIN INFO ===== */
+.dlp-admin-info {
+    padding: 0 24px;
+}
+
+.dlp-admin-info h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.dlp-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dlp-stat-item {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.dlp-stat-number {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 4px;
+}
+
+.dlp-stat-label {
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== TAB CONTENT ===== */
+.dlp-tab-content {
+    display: none;
+}
+
+.dlp-tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.dlp-tab-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.dlp-tab-header h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.dlp-tab-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 16px;
+}
+
+/* ===== SETTINGS GRID ===== */
+.dlp-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+}
+
+.dlp-setting-group {
+    background: #f8fafc;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.dlp-setting-group h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* ===== SETTING ITEMS ===== */
+.dlp-setting-item {
+    margin-bottom: 20px;
+}
+
+.dlp-setting-item:last-child {
+    margin-bottom: 0;
+}
+
+.dlp-setting-item label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+}
+
+.dlp-setting-item input[type="text"],
+.dlp-setting-item input[type="email"],
+.dlp-setting-item input[type="tel"],
+.dlp-setting-item input[type="url"],
+.dlp-setting-item input[type="number"],
+.dlp-setting-item select,
+.dlp-setting-item textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.dlp-setting-item input:focus,
+.dlp-setting-item select:focus,
+.dlp-setting-item textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.dlp-setting-item textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ===== MEDIA UPLOAD ===== */
+.dlp-media-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dlp-media-preview {
+    width: 100%;
+    height: 120px;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9fafb;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.dlp-media-preview:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.dlp-media-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.dlp-media-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+}
+
+.dlp-media-placeholder .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+}
+
+.dlp-media-placeholder span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.dlp-media-button,
+.dlp-media-remove {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dlp-media-button {
+    background: #2563eb;
+    color: white;
+}
+
+.dlp-media-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.dlp-media-remove {
+    background: #ef4444;
+    color: white;
+}
+
+.dlp-media-remove:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* ===== COLOR PICKER ===== */
+.dlp-color-picker {
+    width: 60px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+}
+
+.dlp-color-picker:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* ===== FORM STYLES ===== */
+#dlp-theme-settings-form {
+    margin: 0;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1200px) {
+    .dlp-admin-content {
+        flex-direction: column;
+    }
+    
+    .dlp-admin-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .dlp-admin-nav {
+        display: flex;
+        overflow-x: auto;
+        padding: 0 24px;
+        margin-bottom: 20px;
+    }
+    
+    .dlp-nav-item {
+        white-space: nowrap;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+    
+    .dlp-nav-item.active {
+        border-left: none;
+        border-bottom-color: #2563eb;
+    }
+    
+    .dlp-stats {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    .dlp-stat-item {
+        min-width: 120px;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .dlp-admin-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .dlp-admin-header-content h1 {
+        font-size: 24px;
+    }
+    
+    .dlp-admin-main {
+        padding: 20px;
+    }
+    
+    .dlp-settings-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .dlp-setting-group {
+        padding: 20px;
+    }
+    
+    .dlp-admin-nav {
+        padding: 0 20px;
+    }
+    
+    .dlp-nav-item {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .dlp-admin-info {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dlp-admin-wrap {
+        margin: 10px 0;
+        border-radius: 8px;
+    }
+    
+    .dlp-admin-header {
+        padding: 16px;
+    }
+    
+    .dlp-admin-header-content h1 {
+        font-size: 20px;
+    }
+    
+    .dlp-admin-main {
+        padding: 16px;
+    }
+    
+    .dlp-setting-group {
+        padding: 16px;
+    }
+    
+    .dlp-admin-header-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .dlp-admin-header-actions .button {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== LOADING STATES ===== */
+.dlp-loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.dlp-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #2563eb;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===== NOTIFICATIONS ===== */
+.dlp-notification {
+    position: fixed;
+    top: 32px;
+    right: 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 999999;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 300px;
+}
+
+.dlp-notification.show {
+    transform: translateX(0);
+}
+
+.dlp-notification.success {
+    background: #10b981;
+}
+
+.dlp-notification.error {
+    background: #ef4444;
+}
+
+.dlp-notification.warning {
+    background: #f59e0b;
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+.dlp-admin-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dlp-admin-sidebar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.dlp-admin-sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.dlp-admin-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    .dlp-admin-wrap *,
+    .dlp-admin-wrap *::before,
+    .dlp-admin-wrap *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .dlp-admin-header-actions,
+    .dlp-admin-nav,
+    .dlp-admin-info {
+        display: none !important;
+    }
+    
+    .dlp-admin-content {
+        flex-direction: column;
+    }
+    
+    .dlp-admin-sidebar {
+        width: 100%;
+        border: none;
+        padding: 0;
+    }
+    
+    .dlp-admin-main {
+        padding: 0;
+    }
+    
+    .dlp-setting-group {
+        break-inside: avoid;
+        margin-bottom: 20px;
+    }
+}
